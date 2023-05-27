@@ -47,3 +47,8 @@ SOURCE_DIRECTORY = /Users/user/Downloads/ducs
 
 ```
 ```
+
+# Thanks
+
+GPT4all
+privateGPT
