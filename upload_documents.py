@@ -5,7 +5,7 @@ from utils import upload_files_to_db
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Run with default directory")
+        upload_files_to_db()
     else:
         if sys.argv[1] == "-h" or sys.argv[1] == "--help":
             print("Usage: python upload_documents.py <directory>")

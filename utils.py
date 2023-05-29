@@ -26,9 +26,8 @@ from langchain.vectorstores import Chroma
 
 load_dotenv()
 
-source_directory = os.environ.get("SOURCE_DIRECTORY", "./source_documents")
-chunk_size = os.environ.get("CHUNK_SIZE", 500)
-chunk_overlap = os.environ.get("CHUNK_OVERLAP", 50)
+chunk_size = int(os.environ.get("CHUNK_SIZE", 500))
+chunk_overlap = int(os.environ.get("CHUNK_OVERLAP", 50))
 embeddings_model_name = os.environ.get("EMBEDDINGS_MODEL_NAME")
 persist_directory = os.environ.get("PERSIST_DIRECTORY")
 
@@ -111,7 +110,7 @@ def load_documents(source_dir: str, ignored_files: List[str] = []) -> List[Docum
     return results
 
 
-def process_documents(ignored_files: List[str] = []) -> List[Document]:
+def process_documents(source_directory, ignored_files: List[str] = []) -> List[Document]:
     """
     Load documents and split in chunks
     """
@@ -154,6 +153,8 @@ def unpack_zip(zip_file_path):
 def upload_files_to_db(upload_directory=None):
     if upload_directory is not None:
         source_directory = upload_directory
+    else:
+        source_directory = os.environ.get("SOURCE_DIRECTORY", "./source_documents")
     # Create embeddings
     embeddings = HuggingFaceEmbeddings(model_name=embeddings_model_name)
 
@@ -162,17 +163,17 @@ def upload_files_to_db(upload_directory=None):
         print(f"Appending to existing vectorstore at {persist_directory}")
         db = Chroma(persist_directory=persist_directory, embedding_function=embeddings, client_settings=CHROMA_SETTINGS)
         collection = db.get()
-        texts = process_documents([metadata['source'] for metadata in collection['metadatas']])
+        texts = process_documents(source_directory, [metadata['source'] for metadata in collection['metadatas']])
         print(f"Creating embeddings. May take some minutes...")
         db.add_documents(texts)
     else:
         # Create and store locally vectorstore
         print("Creating new vectorstore")
-        texts = process_documents()
+        texts = process_documents(source_directory)
         print(f"Creating embeddings. May take some minutes...")
         db = Chroma.from_documents(texts, embeddings, persist_directory=persist_directory,
                                    client_settings=CHROMA_SETTINGS)
     db.persist()
     db = None
 
-    print(f"Ingestion complete! You can now run privateGPT.py to query your documents")
+    print(f"Embeddings complete! You can now run chat.py to query your documents.")
