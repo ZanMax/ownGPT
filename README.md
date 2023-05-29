@@ -2,6 +2,12 @@
 
 Create your own GPT chat.
 
+## Clone the repository
+
+```
+git clone https://github.com/ZanMax/ownGPT.git
+```
+
 ## Installation
 
 ```
