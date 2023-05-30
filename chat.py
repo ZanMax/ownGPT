@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import argparse
 import os
 
@@ -17,6 +16,7 @@ persist_directory = os.environ.get('PERSIST_DIRECTORY')
 model_type = os.environ.get('MODEL_TYPE')
 model_path = os.environ.get('MODEL_PATH')
 model_n_ctx = os.environ.get('MODEL_N_CTX')
+show_sources = os.environ.get('SHOW_SOURCES')
 
 from utils import CHROMA_SETTINGS
 
@@ -56,10 +56,11 @@ def chat():
         print("\n> Answer:")
         print(answer)
 
-        # Print the relevant sources used for the answer
-        for document in docs:
-            print("\n> " + document.metadata["source"] + ":")
-            print(document.page_content)
+        if show_sources == "true":
+            # Print the relevant sources used for the answer
+            for document in docs:
+                print("\n> " + document.metadata["source"] + ":")
+                print(document.page_content)
 
 
 def parse_arguments():

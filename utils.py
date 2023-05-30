@@ -150,6 +150,10 @@ def unpack_zip(zip_file_path):
     return extract_dir
 
 
+def cls():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 def upload_files_to_db(upload_directory=None):
     if upload_directory is not None:
         source_directory = upload_directory
