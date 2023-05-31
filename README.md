@@ -81,5 +81,5 @@ python3 chat.py --web
 
 # Thanks
 
-GPT4all
-privateGPT
+- GPT4all
+- privateGPT

@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 
 from dotenv import load_dotenv
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
@@ -77,5 +78,14 @@ def parse_arguments():
     return parser.parse_args()
 
 
+def web():
+    pass
+
+
 if __name__ == "__main__":
-    chat()
+    if len(sys.argv) < 2:
+        chat()
+    else:
+        if sys.argv[1] == "-h" or sys.argv[1] == "--help":
+            print("Usage: python chat.py for console chat and python chat.py -web for web chat")
+            exit(0)
